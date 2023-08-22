@@ -9,3 +9,33 @@ export interface BillBoard {
   label: string;
   imageUrl: string;
 }
+
+export type Image = { id: string; url: string };
+export interface Product {
+  id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  categoryId: string;
+  price: string;
+  size: string;
+  isFeatured: boolean | null;
+  isArchieved: boolean | null;
+  sizeId: string;
+  colourId: string;
+  colour: string;
+  category: string;
+  images: Array<Image>;
+}
+
+export interface Size {
+  id: string;
+  name: string;
+  value: string;
+}
+
+export interface Colour {
+  id: string;
+  name: string;
+  value: string;
+}

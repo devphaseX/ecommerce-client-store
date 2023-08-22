@@ -9,7 +9,10 @@ interface MatchRoute {
 }
 
 export function matchRoute(option: MatchRoute) {
-  if (typeof window === 'undefined' || typeof window.location === 'undefined') {
+  if (
+    (typeof window === 'undefined' || typeof window.location === 'undefined') &&
+    !option.pathnameMatch
+  ) {
     throw new Error('route matching only supported in the window context');
   }
 
@@ -21,10 +24,14 @@ export function matchRoute(option: MatchRoute) {
   } = option;
 
   const activeRouteUrl = new URL(
-    pathnameMatch ? `${window.location.origin}/${activeRoute}` : activeRoute
+    !pathnameMatch
+      ? `${window.location.origin}/${activeRoute}`
+      : `http://www.localhost.com/${activeRoute}`
   );
   const currentRouteUrl = new URL(
-    pathnameMatch ? `${window.location.origin}/${currentRoute}` : currentRoute
+    !pathnameMatch
+      ? `${window.location.origin}/${currentRoute}`
+      : `http://www.localhost.com/${currentRoute}`
   );
 
   let sameOrigin = activeRouteUrl.origin === currentRouteUrl.origin;
