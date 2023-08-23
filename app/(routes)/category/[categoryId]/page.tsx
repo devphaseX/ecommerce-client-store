@@ -7,6 +7,7 @@ import { Container } from '@/components/ui/container';
 import { Filter } from '../../product/[productId]/components/filter';
 import { NoResult } from '@/components/ui/no-result';
 import { ProductCard } from '@/components/ui/product-card';
+import { MobileFilters } from '@/components/mobile-filter';
 
 export const revalidate = 0;
 interface CategoryPageProps {
@@ -31,7 +32,7 @@ const CategoryPage = async ({ params, searchParams }: CategoryPageProps) => {
         <BillboardBanner data={category.billboard} />
         <div className="px-4 sm:px-6 lg:px-8 pb-24">
           <div className="lg:grid lg:grid-cols-5 lg:gap-x-8">
-            {/* Add mobile filters */}
+            <MobileFilters sizes={sizes} colours={colours} />
             <div className="hidden lg:block">
               <Filter valueType="sizeId" name="Sizes" data={sizes} />
               <Filter valueType="colourId" name="Colours" data={colours} />
