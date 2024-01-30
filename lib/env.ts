@@ -4,7 +4,7 @@ const getRequiredEnvFieldMessage = (field: string) =>
   `${field} env field is required`;
 
 const envSchema = object({
-  NEXT_STORE_URL: string({
+  NEXT_PUBLIC_STORE_URL: string({
     required_error: getRequiredEnvFieldMessage('NEXT_STORE_URL'),
   }).nonempty(getRequiredEnvFieldMessage('NEXT_STORE_URL')),
 });

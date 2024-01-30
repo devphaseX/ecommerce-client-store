@@ -23,6 +23,7 @@ export interface Product {
   isArchieved: boolean | null;
   sizeId: string;
   colourId: string;
+  colourName: string;
   colour: string;
   category: string;
   images: Array<Image>;

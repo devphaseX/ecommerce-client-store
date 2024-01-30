@@ -3,7 +3,7 @@ import { typeJSONResponse } from '@/lib/utils';
 import { Size } from '@/types/type';
 
 const getSizes = () =>
-  fetch(`${parsedEnv.NEXT_STORE_URL}/sizes`).then(
+  fetch(`${parsedEnv.NEXT_PUBLIC_STORE_URL}/sizes`).then(
     typeJSONResponse<Array<Size>>
   );
 

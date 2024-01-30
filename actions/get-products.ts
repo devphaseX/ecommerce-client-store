@@ -2,7 +2,7 @@ import { parsedEnv } from '@/lib/env';
 import { typeJSONResponse } from '@/lib/utils';
 import { Product } from '@/types/type';
 
-const url = `${parsedEnv.NEXT_STORE_URL}/products`;
+const url = `${parsedEnv.NEXT_PUBLIC_STORE_URL}/products`;
 
 export interface ProductQuery {
   categoryId?: string;

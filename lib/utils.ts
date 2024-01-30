@@ -52,6 +52,13 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function typeJSONResponse<Data>(response: Response) {
+export function typeJSONResponse<Data>(
+  response: Response,
+  throwErrorOnFail = true
+) {
+  if (!response.ok && throwErrorOnFail) {
+    throw new Error(`Response failed with error code: {${response.status}}`);
+  }
+
   return <Promise<Data>>response.json();
 }

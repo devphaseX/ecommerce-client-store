@@ -13,7 +13,7 @@ const formatter = Intl.NumberFormat('en-US', {
 
 export const Currency: React.FC<CurrencyProps> = ({ value }) => {
   const mounted = useIsMounted();
-  if (!mounted) return null;
+  if (!mounted()) return null;
 
   return <div className="font-semibold">{formatter(+value)}</div>;
 };

@@ -10,8 +10,10 @@ interface HomePageContext {
 }
 const HomePage = async ({ searchParams }: HomePageContext) => {
   const billboard = await getBillboard({
-    id: '87c382ca-a665-46c2-8567-918b177611db',
+    id: '5cb08a4e-98cf-45e9-ad51-bada0cb33cb7',
   });
+
+  console.log({ billboard });
 
   const products = await getProducts({ ...searchParams, isFeatured: true });
   return (

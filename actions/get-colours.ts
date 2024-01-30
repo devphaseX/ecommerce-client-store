@@ -3,7 +3,7 @@ import { typeJSONResponse } from '@/lib/utils';
 import { Colour } from '@/types/type';
 
 const getColours = () =>
-  fetch(`${parsedEnv.NEXT_STORE_URL}/colours`).then(
+  fetch(`${parsedEnv.NEXT_PUBLIC_STORE_URL}/colours`).then(
     typeJSONResponse<Array<Colour>>
   );
 
