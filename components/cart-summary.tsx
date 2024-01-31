@@ -30,7 +30,7 @@ const CartSummary = () => {
 
     try {
       const response = await axios.post<{ url: string }>(
-        `${process.env.NEXT_PUBLIC_STORE_URL}/store/${params.storeId}/checkout`,
+        `${process.env.NEXT_PUBLIC_STORE_URL}/stores/${params.storeId}/checkout`,
         {
           productIds: Object.getOwnPropertyNames(cartItems),
           callbackUrls: {
