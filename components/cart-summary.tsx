@@ -3,8 +3,8 @@
 import { useCart } from '@/hooks/use-cart';
 import { Button } from './ui/button';
 import { Currency } from './ui/currency';
-import { useMemo } from 'react';
-import { useParams } from 'next/navigation';
+import { useEffect, useMemo } from 'react';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 
@@ -12,6 +12,8 @@ interface CartSummary {}
 
 const CartSummary = () => {
   const params = useParams() as { storeId: string };
+  const query = useSearchParams();
+  const router = useRouter();
   const cartItems = useCart(({ items }) => items);
   const clearCartItems = useCart(({ removeAll }) => removeAll);
   if (!cartItems) return null;
@@ -44,6 +46,23 @@ const CartSummary = () => {
       //error occured
     }
   };
+
+  useEffect(() => {
+    const succeed = +(query.get('success') ?? 0) === 1;
+    const cancelled = +(query.get('cancelled') ?? 0) === 1;
+
+    if (succeed) {
+      toast.success('User order placed successfully', { duration: 2000 });
+    } else if (cancelled) {
+      toast.error('User order cancelled', { duration: 2000 });
+    }
+
+    if (succeed || cancelled) {
+      setTimeout(() => {
+        router.push(`/store/${params.storeId}`);
+      }, 2500);
+    }
+  }, []);
 
   return (
     <div
