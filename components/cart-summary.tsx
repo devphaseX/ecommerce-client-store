@@ -95,7 +95,7 @@ const CartSummary = () => {
         </div>
       </div>
       <Button
-        className="w-full mt-6"
+        className="w-full mt-6 flex items-center"
         onClick={onCheckout}
         disabled={checkingOut}
       >

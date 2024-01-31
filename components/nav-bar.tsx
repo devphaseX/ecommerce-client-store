@@ -3,11 +3,13 @@ import { Container } from './ui/container';
 import { MainNav } from './main-nav';
 import { getCategories } from '@/actions/get-categories';
 import { NavbarActions } from './nav-bar-actions';
+import { parsedEnv } from '@/lib/env';
 
 export const revalidate = 0;
 
 const Navbar = async ({ storeId }: { storeId: string }) => {
   const categories = await getCategories({ storeId });
+  console.log({ categories });
   return (
     <div className="border-b">
       <Container>
@@ -18,7 +20,7 @@ const Navbar = async ({ storeId }: { storeId: string }) => {
           >
             <p className="font-bold text-xl">STORE</p>
           </Link>
-          <MainNav data={categories} />
+          {/* <MainNav data={categories} /> */}
           <NavbarActions />
         </div>
       </Container>
