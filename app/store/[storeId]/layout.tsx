@@ -5,6 +5,7 @@ import '@/lib/env';
 import { Footer } from '@/components/footer';
 import { Navbar } from '@/components/nav-bar';
 import { ModalProvider } from '@/providers/modal-provider';
+import { StoreIdParams, StoreIdParamsSchema } from '@/lib/validations/params';
 
 const font = Urbanist({ subsets: ['latin'] });
 
@@ -14,15 +15,19 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
+  params,
   children,
 }: {
+  params: StoreIdParams;
   children: React.ReactNode;
 }) {
+  params = StoreIdParamsSchema.parse(params);
+  const { storeId } = params;
   return (
     <html lang="en">
       <body className={font.className}>
         <ModalProvider />
-        <Navbar />
+        <Navbar storeId={storeId} />
         {children}
         <Footer copyRightYear={new Date().getFullYear().toString()} />
       </body>

@@ -2,8 +2,6 @@ import { parsedEnv } from '@/lib/env';
 import { typeJSONResponse } from '@/lib/utils';
 import { Product } from '@/types/type';
 
-const url = `${parsedEnv.NEXT_PUBLIC_STORE_URL}/products`;
-
 export interface ProductQuery {
   categoryId?: string;
   colourId?: string;
@@ -12,8 +10,10 @@ export interface ProductQuery {
   productSuggestedId?: string;
 }
 
-const getProducts = (query: ProductQuery) => {
-  const urlObj = new URL(url);
+const getProducts = (storeId: string, query: ProductQuery) => {
+  const urlObj = new URL(
+    `${parsedEnv.NEXT_PUBLIC_STORE_URL}/stores/${storeId}/products`
+  );
   const searchParams = urlObj.searchParams;
 
   Object.entries(query).forEach(([key, value]) => {

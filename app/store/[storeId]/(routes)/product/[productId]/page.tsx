@@ -4,19 +4,23 @@ import { Gallery } from '@/components/gallery';
 import { ProductInfo } from '@/components/product-info';
 import { ProductList } from '@/components/product-list';
 import { Container } from '@/components/ui/container';
+import {
+  ProductStoreIdParams,
+  ProductStoreIdParamsSchema,
+} from '@/lib/validations/params';
 
 interface ProductPageProps {
-  params: {
-    productId: string;
-  };
+  params: ProductStoreIdParams;
 }
 
 export const revalidate = 0;
 
 const ProductPage = async ({ params }: ProductPageProps) => {
-  const product = await getProduct(params.productId);
+  params = ProductStoreIdParamsSchema.parse(params);
+  const { productId, storeId } = params;
+  const product = await getProduct({ id: productId, storeId });
 
-  const suggestedProducts = await getProducts({
+  const suggestedProducts = await getProducts(storeId, {
     categoryId: product.categoryId,
     productSuggestedId: product.id,
   });

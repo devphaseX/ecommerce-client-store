@@ -8,22 +8,31 @@ import { Filter } from '../../product/[productId]/components/filter';
 import { NoResult } from '@/components/ui/no-result';
 import { ProductCard } from '@/components/ui/product-card';
 import { MobileFilters } from '@/components/mobile-filter';
+import {
+  CategoryStoreIdParams,
+  CategoryStoreIdParamsSchema,
+} from '@/lib/validations/params';
 
 export const revalidate = 0;
 interface CategoryPageProps {
-  params: { categoryId: string };
+  params: CategoryStoreIdParams;
   searchParams: Pick<ProductQuery, 'colourId' | 'sizeId'>;
 }
 
 const CategoryPage = async ({ params, searchParams }: CategoryPageProps) => {
+  params = CategoryStoreIdParamsSchema.parse(params);
+  const { storeId } = params;
   const [products, sizes, colours, category] = await Promise.all([
-    getProducts({
+    getProducts(storeId, {
       categoryId: params.categoryId,
       ...searchParams,
     }),
-    getSizes(),
-    getColours(),
-    getCategory(params.categoryId),
+    getSizes({ storeId }),
+    getColours({ storeId }),
+    getCategory({
+      id: params.categoryId,
+      storeId,
+    }),
   ]);
 
   return (

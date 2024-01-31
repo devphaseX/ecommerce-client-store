@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { IconButton } from './icon-button';
 import { Expand, ShoppingCart } from 'lucide-react';
 import { Currency } from './currency';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { usePreviewModal } from '@/hooks/use-preview-modal';
 import { MouseEventHandler } from 'react';
 import { useCart } from '@/hooks/use-cart';
@@ -16,10 +16,11 @@ interface ProductCardProps {
 
 export const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
   const router = useRouter();
+  const params = useParams() as { storeId: string };
   const openPreviewModal = usePreviewModal(({ onOpen }) => onOpen);
   const addToCart = useCart(({ addItem }) => addItem);
   const handleClick = () => {
-    router.push(`/product/${item.id}`);
+    router.push(`/store/${params.storeId}/product/${item.id}`);
   };
 
   const onPreview: MouseEventHandler<HTMLButtonElement> = (event) => {

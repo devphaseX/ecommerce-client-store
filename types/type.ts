@@ -8,6 +8,7 @@ export interface BillBoard {
   id: string;
   label: string;
   imageUrl: string;
+  createdAt: Date;
 }
 
 export type Image = { id: string; url: string };
