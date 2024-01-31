@@ -3,16 +3,15 @@
 import { useCart } from '@/hooks/use-cart';
 import { Button } from './ui/button';
 import { Currency } from './ui/currency';
-import { useEffect, useMemo } from 'react';
-import { typeJSONResponse } from '@/lib/utils';
-import { useSearchParams } from 'next/navigation';
+import { useMemo } from 'react';
+import { useParams } from 'next/navigation';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 
 interface CartSummary {}
 
 const CartSummary = () => {
-  const params = useSearchParams();
+  const params = useParams() as { storeId: string };
   const cartItems = useCart(({ items }) => items);
   const clearCartItems = useCart(({ removeAll }) => removeAll);
   if (!cartItems) return null;
@@ -24,9 +23,17 @@ const CartSummary = () => {
 
   const onCheckout = async () => {
     const response = await axios.post<{ url: string }>(
-      `${process.env.NEXT_PUBLIC_STORE_URL}/checkout`,
+      `${process.env.NEXT_PUBLIC_STORE_URL}/store/${params.storeId}/checkout`,
       {
         productIds: Object.getOwnPropertyNames(cartItems),
+        callbackUrls: {
+          confirmationUrl: `${
+            process.env['NEXT_PUBLIC_URL'] as string
+          }/carts?success=1`,
+          cancellationUrl: `${
+            process.env['NEXT_PUBLIC_URL'] as string
+          }/carts?cancelled=1`,
+        },
       },
       { headers: { 'Content-Type': 'application/json' } }
     );
