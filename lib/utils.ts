@@ -56,7 +56,6 @@ export function typeJSONResponse<Data>(
   response: Response,
   throwErrorOnFail = true
 ) {
-  console.log({ status: response.status });
   if (!response.ok && throwErrorOnFail) {
     throw new Error(`Response failed with error code: {${response.status}}`);
   }
