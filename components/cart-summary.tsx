@@ -13,7 +13,7 @@ interface CartSummary {}
 
 const CartSummary = () => {
   const [checkingOut, setCheckingOut] = useState(false);
-  const params = useParams() as { storeId: string };
+  const { storeId } = (useParams() as { storeId: string }) ?? {};
   const query = useSearchParams();
   const router = useRouter();
   const cartItems = useCart(({ items }) => items);
@@ -30,16 +30,16 @@ const CartSummary = () => {
 
     try {
       const response = await axios.post<{ url: string }>(
-        `${process.env.NEXT_PUBLIC_STORE_URL}/stores/${params.storeId}/checkout`,
+        `${process.env.NEXT_PUBLIC_STORE_URL}/stores/${storeId}/checkout`,
         {
           productIds: Object.getOwnPropertyNames(cartItems),
           callbackUrls: {
             confirmationUrl: `${
               process.env['NEXT_PUBLIC_URL'] as string
-            }/carts?success=1`,
+            }/store/${storeId}/carts?success=1`,
             cancellationUrl: `${
               process.env['NEXT_PUBLIC_URL'] as string
-            }/carts?cancelled=1`,
+            }/carts/${storeId}/carts?cancelled=1`,
           },
         },
         { headers: { 'Content-Type': 'application/json' } }
@@ -68,7 +68,7 @@ const CartSummary = () => {
 
     if (succeed || cancelled) {
       setTimeout(() => {
-        router.push(`/store/${params.storeId}`);
+        router.push(`/store/${storeId}`);
       }, 2500);
     }
   }, []);
