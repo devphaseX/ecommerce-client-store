@@ -3,14 +3,16 @@
 import { useCart } from '@/hooks/use-cart';
 import { Button } from './ui/button';
 import { Currency } from './ui/currency';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import toast from 'react-hot-toast';
 import axios from 'axios';
+import { Loader2 } from 'lucide-react';
 
 interface CartSummary {}
 
 const CartSummary = () => {
+  const [checkingOut, setCheckingOut] = useState(false);
   const params = useParams() as { storeId: string };
   const query = useSearchParams();
   const router = useRouter();
@@ -24,26 +26,33 @@ const CartSummary = () => {
   );
 
   const onCheckout = async () => {
-    const response = await axios.post<{ url: string }>(
-      `${process.env.NEXT_PUBLIC_STORE_URL}/store/${params.storeId}/checkout`,
-      {
-        productIds: Object.getOwnPropertyNames(cartItems),
-        callbackUrls: {
-          confirmationUrl: `${
-            process.env['NEXT_PUBLIC_URL'] as string
-          }/carts?success=1`,
-          cancellationUrl: `${
-            process.env['NEXT_PUBLIC_URL'] as string
-          }/carts?cancelled=1`,
-        },
-      },
-      { headers: { 'Content-Type': 'application/json' } }
-    );
+    setCheckingOut(true);
 
-    if (response.status === 200) {
-      window.location.href = response.data.url;
-    } else {
-      //error occured
+    try {
+      const response = await axios.post<{ url: string }>(
+        `${process.env.NEXT_PUBLIC_STORE_URL}/store/${params.storeId}/checkout`,
+        {
+          productIds: Object.getOwnPropertyNames(cartItems),
+          callbackUrls: {
+            confirmationUrl: `${
+              process.env['NEXT_PUBLIC_URL'] as string
+            }/carts?success=1`,
+            cancellationUrl: `${
+              process.env['NEXT_PUBLIC_URL'] as string
+            }/carts?cancelled=1`,
+          },
+        },
+        { headers: { 'Content-Type': 'application/json' } }
+      );
+
+      if (response.status === 200) {
+        window.location.href = response.data.url;
+      } else {
+        //error occured
+      }
+    } catch (e) {
+    } finally {
+      setCheckingOut(false);
     }
   };
 
@@ -85,8 +94,13 @@ const CartSummary = () => {
           <Currency value={totalPrice} />
         </div>
       </div>
-      <Button className="w-full mt-6" onClick={onCheckout}>
+      <Button
+        className="w-full mt-6"
+        onClick={onCheckout}
+        disabled={checkingOut}
+      >
         Checkout
+        {checkingOut && <Loader2 className="w-4 h-4 ml-2 animate-spin" />}
       </Button>
     </div>
   );
