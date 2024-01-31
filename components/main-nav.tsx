@@ -3,7 +3,7 @@
 import { cn, matchRoute } from '@/lib/utils';
 import { Category } from '@/types/type';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { useParams, usePathname } from 'next/navigation';
 
 interface MainNavProps {
   data: Category[];
@@ -17,11 +17,12 @@ type NavRoute = {
 
 export const MainNav: React.FC<MainNavProps> = ({ data }) => {
   const pathname = usePathname();
+  const { storeId } = useParams() as { storeId: string };
 
   const navRoutes = data.map(
     (route): NavRoute => ({
       label: route.name,
-      href: `/category/${route.id}`,
+      href: `/store/${storeId}/category/${route.id}`,
       get routeActive() {
         return matchRoute({
           activeRoute: this.label,

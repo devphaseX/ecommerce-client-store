@@ -95,12 +95,12 @@ const CartSummary = () => {
         </div>
       </div>
       <Button
-        className="w-full mt-6 flex items-center"
+        className="w-full mt-6 flex items-center justify-center"
         onClick={onCheckout}
         disabled={checkingOut}
       >
         Checkout
-        {checkingOut && <Loader2 className="w-4 h-4 ml-2 animate-spin" />}
+        {checkingOut && <Loader2 className="w-5 h-5 ml-2 animate-spin" />}
       </Button>
     </div>
   );
